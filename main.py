@@ -10,7 +10,6 @@ from google.appengine.api.labs import taskqueue
 
 logging.getLogger().setLevel(logging.DEBUG)
 
-#def baseN(num,b,numerals="0123456789abcdefghijklmnopqrstuvwxyz"): 
 def baseN(num,b,numerals="abcdefghijklmnopqrstuvwxyz"): 
     return ((num == 0) and  "0" ) or (baseN(num // b, b).lstrip("0") + numerals[num % b])
 
