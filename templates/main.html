@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if user %}
+<p>      
+<h2>Your Kronhooks:</h2>
+<table class="hooks" cellspacing="0">
+<tr>	
+<th>Name</th><th>Interval</th><th>RID</th><th>Action</th>
+</tr>	
+{% for hook in hooks %}
+<tr>	
+<td class="int"><b>{{ hook }}</b></td>	
+<td class="int">{{ hook.interval }}</td>	
+<td class="int">{{ hook.rid }}</td>
+<td class="int"><form style="display:inline;" action="/" method="post"><input type="hidden" name="name" value="{{ hook.name }}" /><input type="submit" value="Delete" /></form></td>
+</tr>	
+{% endfor %}
+</table>
+</p>      
+<p>      
+<h2>New KronHook:<h2>
+<form action="/" method="post">
+<fieldset>
+<label>Interval(minutes):
+<select name="interval">
+{% if admin %}
+<option>1</option>	
+{% endif %}
+<option selected="selected">5</option>	
+<option>10</option>	
+<option>30</option>	
+<option>60</option>	
+</select>
+</label>
+&nbsp;&nbsp;
+<label>RID: <input type="text" name="rid" style="width: 200px" /></label>
+&nbsp;&nbsp;
+<input type="submit" value="Add KronHook" />
+</fieldset>
+</form>
+</p>      
+{% else %}
+<p>KronHooks is a time-based <a href="http://webhooks.org/">webhook</a> scheduler for <a href="http://apps.kynetx.com/">Kynetx web applications</a>. Kronhooks enables Kynetx developers to raise events into the <a href="http://docs.kynetx.com/docs/Webhook_Endpoint">Webhook Endpoint</a> of their ruleset at regular intervals of 5, 10, 30 or 60 minutes.</p>
+<p>Kronhooks is a fork of <a href="https://github.com/zh/cronhooks">cronhooks</a> developed by <a href="https://github.com/zh">Stoyan Zhekov</a>.</p>
+<h2 align="center"><a href="{{ login_url }}">Login</a></h2>
+{% endif %}
+{% endblock %}

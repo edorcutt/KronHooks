@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>		
+    <title>{% block title %}KronHooks - Kynetx Webhook Cronjobs{% endblock %}</title>
+    <link href="/static/style.css" type="text/css" rel="stylesheet" />
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="header">
+        <div style="float: right;">
+          {% if user %}
+          {{ user.nickname }} | <a href="{{ logout_url }}">Logout</a>
+          {% else %}
+          Not logged in. <a href="{{ login_url }}">Login?</a>
+          {% endif %}
+        </div>
+        <h1>KronHooks</h1>
+      </div>
+      <div id="content">{% block content %}{% endblock %}</div>
+      <div id="footer"><a href="http://about.me/edorcutt">Ed Orcutt</a> | 
+	      <a href="http://github.com/edorcutt/KronHooks/">Sources</a>
+      </div>
+      </div>
+      {% block bottom %}{% endblock %}
+    </div>
+  </body>
+</html>
