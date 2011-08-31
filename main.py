@@ -10,7 +10,8 @@ from google.appengine.api.labs import taskqueue
 
 logging.getLogger().setLevel(logging.DEBUG)
 
-def baseN(num,b,numerals="0123456789abcdefghijklmnopqrstuvwxyz"): 
+#def baseN(num,b,numerals="0123456789abcdefghijklmnopqrstuvwxyz"): 
+def baseN(num,b,numerals="abcdefghijklmnopqrstuvwxyz"): 
     return ((num == 0) and  "0" ) or (baseN(num // b, b).lstrip("0") + numerals[num % b])
 
 
@@ -23,7 +24,7 @@ class KronHook(db.Model):
     updated  = db.DateTimeProperty(auto_now=True)
     
     def __init__(self, *args, **kwargs):
-        kwargs['name'] = kwargs.get('name', baseN(abs(hash(time.time())), 36))
+        kwargs['name'] = kwargs.get('name', baseN(abs(hash(time.time())), 26))
         super(KronHook, self).__init__(*args, **kwargs)
     
     def __str__(self):
@@ -63,8 +64,10 @@ class CronHandler(webapp.RequestHandler):
             self.error(400)
             return self.response.out.write('400 Invalid Request')
         for h in KronHook.all().filter('interval =', ii):
-            hook_url = "http://webhooks.kynetxapps.net/h/" + h.rid + "/kronhook"
+            # hook_url = "http://webhooks.kynetxapps.net/h/" + h.rid + "/kronhook"
+            hook_url = "http://cs.kobj.net/blue/event/kronhook/" + h.name + "/" + h.rid
             taskqueue.add(url="/post/" + h.name, params={"url": hook_url, "interval": str(interval)})
+            # logging.debug('Event URL: %s', hook_url)
         return self.response.out.write("OK")
 
 
@@ -77,7 +80,8 @@ class PostHandler(webapp.RequestHandler):
                       "hook.time": now.strftime("%Y-%m-%dT%H:%M:%SZ")}
             urlfetch.fetch(url=self.request.POST['url'], 
                            payload=urllib.urlencode(params), 
-                           method='POST')
+                           method='POST',
+                           deadline=30)
         except Exception, e:
             logging.error('problem: %s' % repr(e))
             pass

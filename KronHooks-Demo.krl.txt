@@ -1,0 +1,35 @@
+ruleset a169x397 {
+  meta {
+    name "KronHooks-Demo"
+
+    description <<
+      KronHooks Webhook Endpoint Scheduler Demo
+    >>
+
+    author "Ed Orcutt, LOBOSLLC"
+    logging on
+
+    key twitter {
+      "consumer_key"       : "YOUR KEY HERE",
+      "consumer_secret"    : "YOUR SECRET HERE",
+      "oauth_token"        : "YOUR TOKEN HERE",
+      "oauth_token_secret" : "YOUR SECRET HERE"
+    }
+  }
+
+  // ------------------------------------------------------------------------
+  rule MyKronHook {
+    select when kronhook kcipvwj
+    pre {
+      hookTime = event:param("hook.time");
+      msg = "KronHook raised an event at #{hookTime}";
+    }
+    {
+      twitter:update(msg);
+    }
+  }
+
+  // ------------------------------------------------------------------------
+  // Beyond here there be dragons :)
+  // ------------------------------------------------------------------------
+}
