@@ -3,7 +3,7 @@ ruleset a169x397 {
     name "KronHooks-Demo"
 
     description <<
-      KronHooks Webhook Endpoint Scheduler Demo
+      KronHooks Event Scheduler Demo
     >>
 
     author "Ed Orcutt, LOBOSLLC"
